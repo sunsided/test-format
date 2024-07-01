@@ -12,7 +12,7 @@ readme = "README.md"
 edition = "2021"
 rust-version = "1.64"
 categories = ["no-std", "development-tools::debugging"]
-keywords = ["format", "debug", "display"]
+keywords = ["format", "debug", "display", "no_std"]
 
 [features]
 std = []
