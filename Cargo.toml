@@ -2,7 +2,7 @@
 name = "test-format"
 version = "0.1.0"
 description = """
-Testing of Debug and Display format implementations with support for no_std
+Provides the assert_debug_fmt and assert_display_fmt macros for testing Debug (or Display) implementations on no_std
 """
 authors = ["Markus Mayer <widemeadows@gmail.com>"]
 license = "EUPL-1.2 OR Apache-2.0 OR MIT"
