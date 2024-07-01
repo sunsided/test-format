@@ -86,6 +86,7 @@ macro_rules! assert_display_fmt {
 }
 
 /// Functionality for testing [`Debug`] or `Display` implementations.
+#[derive(Debug)]
 pub struct AssertFormat<'a> {
     /// The original string to compare.
     original: &'a str,
