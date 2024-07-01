@@ -8,7 +8,8 @@
 [![Apache 2.0 licensed][license-apache-image]][license-apache-link]
 [![MIT licensed][license-mit-image]][license-mit-link]
 
-Test `Debug` implementations on `no_std` targets, or `Debug` and `Display` on `std`.
+Test `Debug` implementations on `no_std` targets, or `Debug` and `Display` on `std` via
+`assert_debug_fmt!` and `assert_display_fmt!` macros.
 
 ## Requirements
 
