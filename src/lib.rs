@@ -1,3 +1,5 @@
+//! # Test `Debug` and `Display` implementations (with `no_std`)
+//!
 //! Testing of Debug and Display format implementations with support for `no_std` via
 //! [`assert_debug_fmt`] and `assert_display_fmt!` macros.
 //!

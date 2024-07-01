@@ -1,4 +1,4 @@
-# Test Format implementations
+# Test `Debug` and `Display` implementations (with `no_std`)
 
 [![Crates.io][crates-image]][crates-link]
 [![Docs][docs-image]][docs-link]
