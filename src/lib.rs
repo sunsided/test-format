@@ -1,4 +1,5 @@
-//! Testing of Debug and Display format implementations with support for `no_std`.
+//! Testing of Debug and Display format implementations with support for `no_std` via
+//! [`assert_debug_fmt`] and `assert_display_fmt!` macros.
 //!
 //! ## `std` vs `no_std`
 //! This crate builds in `no_std` mode by default, allowing for testing of [`Debug`]
@@ -20,6 +21,25 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 use core::fmt::{Debug, Write};
+
+/// Asserts that the [`Debug`] trait is correctly implemented.
+#[macro_export]
+macro_rules! assert_debug_fmt {
+    ($input:expr, $expectation:expr) => {
+        let input = $input;
+        $crate::AssertFormat::assert_debug_fmt(&input, $expectation);
+    };
+}
+
+/// Asserts that the `Display` trait is correctly implemented.
+#[macro_export]
+#[cfg(feature = "std")]
+macro_rules! assert_display_fmt {
+    ($input:expr, $expectation:expr) => {
+        let input = $input;
+        $crate::AssertFormat::assert_display_fmt(&input, $expectation);
+    };
+}
 
 /// Functionality for testing [`Debug`] or `Display` implementations.
 pub struct AssertFormat<'a> {
@@ -121,7 +141,7 @@ mod tests {
     #[cfg(feature = "std")]
     pub fn display() {
         let input = Test("valid", ' ', "input");
-        AssertFormat::assert_display_fmt(input, "valid input");
+        assert_debug_fmt!(input, "valid input");
     }
 
     #[test]
@@ -130,6 +150,6 @@ mod tests {
     #[cfg(feature = "std")]
     pub fn display_invalid() {
         let input = Test("valid", ' ', "inputs");
-        AssertFormat::assert_display_fmt(input, "valid input");
+        assert_display_fmt!(input, "valid input");
     }
 }
