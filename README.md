@@ -1,5 +1,7 @@
 # Test Format implementations
 
+[![Crates.io][crates-image]][crates-link]
+[![Docs][docs-image]][docs-link]
 [![Build Status][build-image]][build-link]
 [![Safety Dance][safety-image]][safety-link]
 [![codecov][codecov-image]][codecov-link]
@@ -36,6 +38,14 @@ Triple licensed under your choice of either of:
 - MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
 
 [//]: # (badges)
+
+[crates-image]: https://img.shields.io/crates/v/test-format
+
+[crates-link]: https://crates.io/crates/test-format
+
+[docs-image]: https://docs.rs/test-format/badge.svg
+
+[docs-link]: https://docs.rs/test-format/
 
 [build-image]: https://github.com/sunsided/test-format/workflows/Rust/badge.svg
 
