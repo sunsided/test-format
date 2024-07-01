@@ -62,7 +62,7 @@ jobs:
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          components: ${{ matrix.rust-version }}
+          toolchain: ${{ matrix.rust-version }}
 
       - name: Install dependencies
         run: cargo fetch

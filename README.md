@@ -9,7 +9,12 @@
 [![MIT licensed][license-mit-image]][license-mit-link]
 
 Test `Debug` implementations on `no_std` targets, or `Debug` and `Display` on `std` via
-`assert_debug_fmt!` and `assert_display_fmt!` macros.
+`assert_debug_fmt!` and `assert_display_fmt!` macros:
+
+```rust
+assert_debug_fmt!(your_type, "expected debug format output");
+assert_display_fmt!(your_type, "expected display format output");
+```
 
 ## Requirements
 
