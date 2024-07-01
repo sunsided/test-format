@@ -1,0 +1,22 @@
+[package]
+name = "test-format"
+version = "0.1.0"
+description = """
+Testing of Debug and Display format implementations with support for no_std
+"""
+authors = ["Markus Mayer <widemeadows@gmail.com>"]
+license = "EUPL-1.2 OR Apache-2.0 OR MIT"
+homepage = "https://github.com/sunsided/test-format"
+repository = "https://github.com/sunsided/test-format"
+readme = "README.md"
+edition = "2021"
+rust-version = "1.64"
+categories = ["no-std", "development-tools::debugging"]
+keywords = ["format", "debug", "display"]
+
+[features]
+std = []
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
