@@ -101,6 +101,13 @@ impl<'a> AssertFormat<'a> {
             remaining: s,
         }
     }
+
+    /// Indicates how many of the expected bytes remain to be written for a success case.
+    #[must_use]
+    pub fn remaining_expected(&self) -> usize {
+        self.remaining.len()
+    }
+
     /// Asserts that the `Display` trait is correctly implemented.
     ///
     /// ## Panics
@@ -113,6 +120,7 @@ impl<'a> AssertFormat<'a> {
     {
         let mut test = AssertFormat::new(expected);
         let _ = write!(&mut test, "{instance}");
+        test.assert_all_written();
     }
 
     /// Asserts that the `Debug` trait is correctly implemented.
@@ -126,21 +134,70 @@ impl<'a> AssertFormat<'a> {
     {
         let mut test = AssertFormat::new(expected);
         let _ = write!(&mut test, "{instance:?}");
+        test.assert_all_written();
+    }
+
+    fn assert_all_written(&self) {
+        let written = &self.original[0..self.remaining.len()];
+        assert_eq!(
+            self.remaining_expected(),
+            0,
+            "assertion failed: Expected \"{}\" but got \"{}\": missing {} characters.",
+            self.original,
+            written,
+            self.remaining.len() + 1
+        );
     }
 }
 
 impl<'a> Write for AssertFormat<'a> {
     fn write_str(&mut self, s: &str) -> core::fmt::Result {
         let _ = self.original;
-        if self.remaining.starts_with(s) && self.remaining.len() >= s.len() {
+        let length_ok = self.remaining.len() >= s.len();
+        if length_ok && self.remaining.starts_with(s) {
             self.remaining = &self.remaining[s.len()..];
         } else {
             let position = self.original.len() - self.remaining.len();
-            panic!(
-                "assertion failed: Expected \"{}\" but found \"{}\" starting at position {}",
-                self.original, s, position
-            );
+            match first_diff_position(self.remaining, s) {
+                None => unreachable!(),
+                Some(pos) => {
+                    let offending_index = position + pos;
+                    panic!(
+                        "assertion failed: Expected \"{}\" but found \"{}\" starting at position {}: mismatch at position {}.",
+                        self.original, s, position, offending_index
+                    );
+                }
+            }
         }
         Ok(())
+    }
+}
+
+#[allow(unused)]
+fn first_diff_position(s1: &str, s2: &str) -> Option<usize> {
+    let pos = s1.chars().zip(s2.chars()).position(|(a, b)| a != b);
+    match pos {
+        Some(_pos) => pos,
+        None => {
+            if s2.len() == s1.len() {
+                None
+            } else {
+                Some(core::cmp::min(s1.chars().count(), s2.chars().count()))
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn diff_pos() {
+        assert_eq!(first_diff_position("same", "same"), None);
+        assert_eq!(first_diff_position("same", "some"), Some(1));
+        assert_eq!(first_diff_position("some", "same"), Some(1));
+        assert_eq!(first_diff_position("abcd", "abc"), Some(3));
+        assert_eq!(first_diff_position("abc", "abcd"), Some(3));
     }
 }

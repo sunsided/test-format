@@ -30,10 +30,36 @@ pub fn debug() {
 }
 
 #[test]
-#[allow(clippy::should_panic_without_expect)]
-#[should_panic]
+#[should_panic(
+    expected = r#"Expected "valid input" but found "inputs" starting at position 6: mismatch at position 11."#
+)]
 pub fn debug_invalid() {
     let input = Test("valid", ' ', "inputs");
+    assert_debug_fmt!(input, "valid input");
+}
+
+#[test]
+#[should_panic(
+    expected = r#"Expected "valid input" but found "-" starting at position 5: mismatch at position 5."#
+)]
+pub fn debug_invalid_2() {
+    let input = Test("valid", '-', "input");
+    assert_debug_fmt!(input, "valid input");
+}
+
+#[test]
+#[should_panic(expected = r#"Expected "valid input" but got "valid": missing 6 characters."#)]
+pub fn debug_invalid_too_short() {
+    let input = Test("valid", ' ', "");
+    assert_debug_fmt!(input, "valid input");
+}
+
+#[test]
+#[should_panic(
+    expected = r#"Expected "valid input" but found "valid inputs would be nice" starting at position 0: mismatch at position 11."#
+)]
+pub fn debug_invalid_too_long() {
+    let input = Test("valid inputs would be nice", ' ', "");
     assert_debug_fmt!(input, "valid input");
 }
 
@@ -45,10 +71,37 @@ pub fn display() {
 }
 
 #[test]
-#[allow(clippy::should_panic_without_expect)]
-#[should_panic]
+#[should_panic(
+    expected = r#"Expected "valid input" but found "inputs" starting at position 6: mismatch at position 11."#
+)]
 #[cfg(feature = "std")]
 pub fn display_invalid() {
     let input = Test("valid", ' ', "inputs");
     assert_display_fmt!(input, "valid input");
+}
+
+#[test]
+#[should_panic(
+    expected = r#"Expected "valid input" but found "-" starting at position 5: mismatch at position 5."#
+)]
+#[cfg(feature = "std")]
+pub fn display_invalid_2() {
+    let input = Test("valid", '-', "inputs");
+    assert_display_fmt!(input, "valid input");
+}
+
+#[test]
+#[should_panic(expected = r#"Expected "valid input" but got "valid in": missing 9 characters."#)]
+#[cfg(feature = "std")]
+pub fn display_invalid_too_short() {
+    assert_display_fmt!("val", "valid input");
+}
+
+#[test]
+#[should_panic(
+    expected = r#"Expected "valid input" but found "valid inputs would be nice" starting at position 0: mismatch at position 11."#
+)]
+#[cfg(feature = "std")]
+pub fn display_invalid_too_long() {
+    assert_display_fmt!("valid inputs would be nice", "valid input");
 }
