@@ -10,8 +10,7 @@
 [![Apache 2.0 licensed][license-apache-image]][license-apache-link]
 [![MIT licensed][license-mit-image]][license-mit-link]
 
-Test `Debug` implementations on `no_std` targets, or `Debug` and `Display` on `std` via
-`assert_debug_fmt!` and `assert_display_fmt!` macros:
+Test `Debug` and `Display` implementations on `no_std` targets via`assert_debug_fmt!` and `assert_display_fmt!` macros:
 
 ```rust
 assert_debug_fmt!(your_type, "expected debug format output");

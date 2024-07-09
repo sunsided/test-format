@@ -1,7 +1,5 @@
 use core::fmt::{Debug, Write};
 use test_format::assert_debug_fmt;
-
-#[cfg(feature = "std")]
 use test_format::assert_display_fmt;
 
 struct Test<'a>(&'a str, char, &'a str);
@@ -14,8 +12,7 @@ impl<'a> Debug for Test<'a> {
     }
 }
 
-#[cfg(feature = "std")]
-impl<'a> std::fmt::Display for Test<'a> {
+impl<'a> core::fmt::Display for Test<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(self.0)?;
         f.write_char(self.1)?;
@@ -64,7 +61,6 @@ pub fn debug_invalid_too_long() {
 }
 
 #[test]
-#[cfg(feature = "std")]
 pub fn display() {
     let input = Test("valid", ' ', "input");
     assert_display_fmt!(input, "valid input");
@@ -74,7 +70,6 @@ pub fn display() {
 #[should_panic(
     expected = r#"Expected "valid input" but found "inputs" starting at position 6: mismatch at position 11."#
 )]
-#[cfg(feature = "std")]
 pub fn display_invalid() {
     let input = Test("valid", ' ', "inputs");
     assert_display_fmt!(input, "valid input");
@@ -84,7 +79,6 @@ pub fn display_invalid() {
 #[should_panic(
     expected = r#"Expected "valid input" but found "-" starting at position 5: mismatch at position 5."#
 )]
-#[cfg(feature = "std")]
 pub fn display_invalid_2() {
     let input = Test("valid", '-', "inputs");
     assert_display_fmt!(input, "valid input");
@@ -92,7 +86,6 @@ pub fn display_invalid_2() {
 
 #[test]
 #[should_panic(expected = r#"Expected "valid input" but got "valid in": missing 9 characters."#)]
-#[cfg(feature = "std")]
 pub fn display_invalid_too_short() {
     assert_display_fmt!("val", "valid input");
 }
@@ -101,7 +94,6 @@ pub fn display_invalid_too_short() {
 #[should_panic(
     expected = r#"Expected "valid input" but found "valid inputs would be nice" starting at position 0: mismatch at position 11."#
 )]
-#[cfg(feature = "std")]
 pub fn display_invalid_too_long() {
     assert_display_fmt!("valid inputs would be nice", "valid input");
 }
